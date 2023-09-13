@@ -10,6 +10,8 @@
                     <option value="oldest_to_newest">[[admin/settings/post:sorting.oldest-to-newest]]</option>
                     <option value="newest_to_oldest">[[admin/settings/post:sorting.newest-to-oldest]]</option>
                     <option value="most_votes">[[admin/settings/post:sorting.most-votes]]</option>
+                    <option value="most_replies">[[admin/settings/post:sorting.most-replies]]</option>
+
                 </select>
             </div>
             <div class="form-group">
@@ -18,6 +20,8 @@
                     <option value="oldest_to_newest">[[admin/settings/post:sorting.oldest-to-newest]]</option>
                     <option value="newest_to_oldest">[[admin/settings/post:sorting.newest-to-oldest]]</option>
                     <option value="most_posts">[[admin/settings/post:sorting.most-posts]]</option>
+                    <option value="most_replies">[[admin/settings/post:sorting.most-replies]]</option>
+
                 </select>
             </div>
         </form>
