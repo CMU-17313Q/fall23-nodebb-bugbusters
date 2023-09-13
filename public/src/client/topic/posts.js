@@ -194,6 +194,10 @@ define('forum/topic/posts', [
         if (!data.posts.length) {
             return callback();
         }
+        
+        data.posts.sort(function (a, b) {
+            return a.replies - b.replies;
+        });
 
         let after;
         let before;
