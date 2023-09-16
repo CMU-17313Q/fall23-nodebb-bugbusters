@@ -63,6 +63,9 @@ define('forum/topic', [
         addRepliesHandler();
         addPostsPreviewHandler();
 
+        // Call anonymous replies handler
+        addAnonymousRepliesHandler();
+
         handleBookmark(tid);
 
         $(window).on('scroll', utils.debounce(updateTopicTitle, 250));
@@ -322,6 +325,18 @@ define('forum/topic', [
             }
         }
     };
+
+    function addAnonymousRepliesHandler() {
+
+        $('#anonymous-checkbox').on('click', function () {
+        
+            const isAnonymous = $(this).prop('checked');
+           
+            if (isAnonymous) {
+                postData.user.displayname = "Anonymous";
+            } 
+        });
+    }
 
     function updateUserBookmark(index) {
         const bookmarkKey = 'topic:' + ajaxify.data.tid + ':bookmark';
