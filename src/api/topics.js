@@ -77,7 +77,6 @@ topicsAPI.reply = async function (caller, data) {
     if (shouldQueue) {
         return await posts.addToQueue(payload);
     }
-
     const postData = await topics.reply(payload); // postData seems to be a subset of postObj, refactor?
     const postObj = await posts.getPostSummaryByPids([postData.pid], caller.uid, {});
 
@@ -95,6 +94,10 @@ topicsAPI.reply = async function (caller, data) {
     }
 
     socketHelpers.notifyNew(caller.uid, 'newPost', result);
+
+    if (payload.req.body.isAnonymous){
+        postObj[0].user.displayname = 'Anonymous';
+    }
 
     return postObj[0];
 };
