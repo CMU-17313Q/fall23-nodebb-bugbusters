@@ -152,7 +152,12 @@ module.exports = function (Topics) {
         if (parseInt(uid, 10) && !topicData.scheduled) {
             user.notifications.sendTopicNotificationToFollowers(uid, topicData, postData);
         }
-
+        // console.log("Data1");
+        // console.log(data);
+        // console.log("topicData");
+        // console.log(topicData);
+        // console.log("postData");
+        // console.log(postData);
         return {
             topicData: topicData,
             postData: postData,
@@ -160,11 +165,9 @@ module.exports = function (Topics) {
     };
 
     Topics.reply = async function (data) {
-        console.log("Data0");
-        console.log(data);
+        // console.log("Data0");
+        // console.log(data);
         data = await plugins.hooks.fire('filter:topic.reply', data);
-        console.log("Data1");
-        console.log(data);
         const { tid } = data;
         const { uid } = data;
 
@@ -191,11 +194,14 @@ module.exports = function (Topics) {
         data.ip = data.req ? data.req.ip : null;
         let postData = await posts.create(data);
         postData = await onNewPost(postData, data);
-        console.log("YEEHAW");
-        console.log(data);
-        
-
-
+        if (data.isAnonymous) {
+            postData.user.displayname = "Anonymous";
+        }
+        console.log("before");
+        console.log("postData");
+        console.log(postData);
+        console.log("topicData");
+        console.log(topicData);
         const settings = await user.getSettings(uid);
         if (uid > 0 && settings.followTopicsOnReply) {
             await Topics.follow(postData.tid, uid);
@@ -218,6 +224,13 @@ module.exports = function (Topics) {
 
         analytics.increment(['posts', `posts:byCid:${data.cid}`]);
         plugins.hooks.fire('action:topic.reply', { post: _.clone(postData), data: data });
+
+        console.log("after change");
+        console.log("postData");
+        console.log(postData);
+        console.log("topicData");
+        console.log(topicData);
+
 
         return postData;
     };
