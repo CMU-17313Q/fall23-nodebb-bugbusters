@@ -282,7 +282,7 @@ define('forum/topic/postTools', [
                     tid: tid,
                     pid: toPid,
                     topicName: ajaxify.data.titleRaw,
-                    text: username ? username + ' ' : ($('[component="topic/quickreply/text"]').val() || ''),
+                    text: $('[component="topic/quickreply/text"]').val() || '',
                 });
             }
         });
@@ -371,6 +371,7 @@ define('forum/topic/postTools', [
     function getUserSlug(button) {
         return new Promise((resolve) => {
             let slug = '';
+            
             if (button.attr('component') === 'topic/reply') {
                 resolve(slug);
                 return;
@@ -382,7 +383,8 @@ define('forum/topic/postTools', [
                     if (!slug) {
                         if (post.attr('data-uid') !== '0') {
                             slug = '[[global:former_user]]';
-                        } else {
+                        } 
+                        else {
                             slug = '[[global:guest]]';
                         }
                     }

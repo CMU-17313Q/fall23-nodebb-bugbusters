@@ -184,10 +184,13 @@ module.exports = function (Topics) {
         data.ip = data.req ? data.req.ip : null;
         let postData = await posts.create(data);
         postData = await onNewPost(postData, data);
+
         // making sure anonymous username is actually anonymous
         if (data.isAnonymous) {
             postData.user.displayname = "Anonymous";
+            postData.user.userslug = " ";
         }
+
         const settings = await user.getSettings(uid);
         if (uid > 0 && settings.followTopicsOnReply) {
             await Topics.follow(postData.tid, uid);
