@@ -17,6 +17,8 @@ const translator = require('../translator');
 
 module.exports = function (Topics) {
     Topics.create = async function (data) {
+        console.log("Data0");
+        console.log(data);
         // This is an internal method, consider using Topics.post instead
         const timestamp = data.timestamp || Date.now();
 
@@ -138,6 +140,8 @@ module.exports = function (Topics) {
         topicData.index = 0;
         postData.index = 0;
 
+
+
         if (topicData.scheduled) {
             await Topics.delete(tid);
         }
@@ -156,7 +160,11 @@ module.exports = function (Topics) {
     };
 
     Topics.reply = async function (data) {
+        console.log("Data0");
+        console.log(data);
         data = await plugins.hooks.fire('filter:topic.reply', data);
+        console.log("Data1");
+        console.log(data);
         const { tid } = data;
         const { uid } = data;
 
@@ -183,6 +191,10 @@ module.exports = function (Topics) {
         data.ip = data.req ? data.req.ip : null;
         let postData = await posts.create(data);
         postData = await onNewPost(postData, data);
+        console.log("YEEHAW");
+        console.log(data);
+        
+
 
         const settings = await user.getSettings(uid);
         if (uid > 0 && settings.followTopicsOnReply) {
