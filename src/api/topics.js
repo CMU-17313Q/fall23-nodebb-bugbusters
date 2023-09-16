@@ -66,8 +66,6 @@ topicsAPI.create = async function (caller, data) {
 };
 
 topicsAPI.reply = async function (caller, data) {
-    console.log("Data =");
-    console.log(data);
     if (!data || !data.tid || (meta.config.minimumPostLength !== 0 && !data.content)) {
         throw new Error('[[error:invalid-data]]');
     }
@@ -79,8 +77,6 @@ topicsAPI.reply = async function (caller, data) {
     if (shouldQueue) {
         return await posts.addToQueue(payload);
     }
-    console.log("payload");
-    console.log(payload);
     const postData = await topics.reply(payload); // postData seems to be a subset of postObj, refactor?
     const postObj = await posts.getPostSummaryByPids([postData.pid], caller.uid, {});
 
@@ -99,15 +95,9 @@ topicsAPI.reply = async function (caller, data) {
 
     socketHelpers.notifyNew(caller.uid, 'newPost', result);
 
-    console.log("postObj");
-    console.log(postObj[0]);
-
     if (payload.req.body.isAnonymous){
         postObj[0].user.displayname = 'Anonymous';
     }
-
-    console.log("postObj after");
-    console.log(postObj[0]); 
 
     return postObj[0];
 };
