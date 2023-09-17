@@ -219,6 +219,11 @@ define('forum/topic', [
             });
         });
     }
+    PostTools.addAnonymousRepliesHandler = function (tid) {
+        const postContainer = components.get('topic');
+        postContainer.on('click', '[component="post/anonymous-reply"]', function () {  
+        });
+    };
 
     function addPostsPreviewHandler() {
         if (!ajaxify.data.showPostPreviewsOnHover || utils.isMobile()) {
