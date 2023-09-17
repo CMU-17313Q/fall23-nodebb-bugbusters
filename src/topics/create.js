@@ -188,7 +188,7 @@ module.exports = function (Topics) {
             postData.user.displayname = 'Anonymous';
             postData.user.userslug = '';
             postData.user.status = 'offline';
-            
+            console.log(postData)
         }
 
         const settings = await user.getSettings(uid);
