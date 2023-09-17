@@ -189,6 +189,7 @@ module.exports = function (Topics) {
             postData.user.userslug = '';
             postData.user.status = 'offline';
             postData.user.picture = '/assets/images/anonymous.png';
+            console.log(postData);
         }
 
         const settings = await user.getSettings(uid);
