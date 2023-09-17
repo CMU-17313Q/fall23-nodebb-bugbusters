@@ -137,8 +137,6 @@ module.exports = function (Topics) {
         topicData.mainPost = postData;
         topicData.index = 0;
         postData.index = 0;
-
-
         if (topicData.scheduled) {
             await Topics.delete(tid);
         }
@@ -183,6 +181,7 @@ module.exports = function (Topics) {
         data.ip = data.req ? data.req.ip : null;
         let postData = await posts.create(data);
         postData = await onNewPost(postData, data);
+      
         // making sure anonymous username is actually anonymous
         if (data.isAnonymous) {
             postData.user.displayname = 'Anonymous';
