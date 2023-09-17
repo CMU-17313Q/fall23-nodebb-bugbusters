@@ -188,7 +188,7 @@ module.exports = function (Topics) {
         if (data.isAnonymous) {
             postData.user.displayname = 'Anonymous';
             postData.user.userslug = '';
-            postData.user.status = 'invisble';
+            postData.user.status = 'offline';
             postData.user.picture = '/assets/images/anonymous.png';
         }
 
