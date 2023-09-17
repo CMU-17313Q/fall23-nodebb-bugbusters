@@ -1,17 +1,21 @@
 'use strict';
 
-function handleButtonClick() {
-    if (data.isAnonymous) {
-        postData.user.displayname = "Anonymous";
-        postData.user.userslug = "";
-        postData.user.status = 'offline';
-        postData.user.picture = '/assets/uploads/profile/anonymous.png';
-    } 
-}
-
 const myButton = document.getElementById('myButton');
+const postData = {
+  user: {}
+};
 
-myButton.addEventListener('click', handleButtonClick);
+myButton.addEventListener('click', () => {
+  if (data.isAnonymous) {
+    Object.assign(postData.user, {
+      displayname: 'Anonymous',
+      userslug: '',
+      status: 'offline',
+      picture: '/assets/uploads/profile/anonymous.png'
+    });
+  }
+});
+
 
 define('forum/compose', ['hooks'], function (hooks) {
     const Compose = {};
