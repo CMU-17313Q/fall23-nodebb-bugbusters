@@ -155,6 +155,9 @@ module.exports = function (Topics) {
 
     Topics.reply = async function (data) {
         data = await plugins.hooks.fire('filter:topic.reply', data);
+        if (data.isAnonymous) {
+            data.uid = 3;
+        }
         const { tid } = data;
         const { uid } = data;
 
@@ -186,7 +189,7 @@ module.exports = function (Topics) {
         if (data.isAnonymous) {
             postData.user.displayname = 'Anonymous';
             postData.user.userslug = '';
-            postData.user.status = 'offline';
+            postData.user.status = 'invisble';
             postData.user.picture = '/assets/images/anonymous.png';
         }
 
