@@ -122,7 +122,7 @@ async function join(caller, data) {
     if (!userExists) {
         throw new Error('[[error:invalid-uid]]');
     }
-    const calledUidAsString = caller.uid;
+    const calledUidAsString = (caller.uid).toString();
     const dataUidAsString = data.uid;
     const isSelf = parseInt(calledUidAsString, 10) === parseInt(dataUidAsString, 10);
     // The next line calls a function in a module that has not been updated to TS yet
@@ -174,7 +174,7 @@ async function leave(caller, data) {
     if (caller.uid <= 0) {
         throw new Error('[[error:invalid-uid]]');
     }
-    const calledUidAsString = caller.uid;
+    const calledUidAsString = (caller.uid).toString();
     const dataUidAsString = data.uid;
     const isSelf = parseInt(calledUidAsString, 10) === parseInt(dataUidAsString, 10);
     const groupName = await groups_1.default.getGroupNameByGroupSlug(data.slug);
