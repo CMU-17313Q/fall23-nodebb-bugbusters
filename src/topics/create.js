@@ -184,6 +184,9 @@ module.exports = function (Topics) {
         let postData = await posts.create(data);
         postData = await onNewPost(postData, data);
         // making sure anonymous username is actually anonymous
+        if (!data.isAnonymous) {
+            console.log('non anonymous post');
+        }
         if (data.isAnonymous) {
             postData.user.displayname = 'Anonymous';
             postData.user.userslug = '';
