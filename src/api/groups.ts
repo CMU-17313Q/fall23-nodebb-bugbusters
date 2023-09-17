@@ -9,7 +9,7 @@ import slugify from '../slugify';
 import { GroupDataObject } from '../types/group';
 
 interface Caller {
-    uid: number | string
+    uid: number
     ip: string
 }
 
@@ -151,7 +151,7 @@ export async function join(caller: Caller, data: Data) {
         throw new Error('[[error:invalid-uid]]');
     }
 
-    const calledUidAsString: string = caller.uid as string;
+    const calledUidAsString: string = (caller.uid).toString();
     const dataUidAsString: string = data.uid as string;
     const isSelf = parseInt(calledUidAsString, 10) === parseInt(dataUidAsString, 10);
     // The next line calls a function in a module that has not been updated to TS yet
@@ -204,7 +204,7 @@ export async function leave(caller: Caller, data: Data) {
     if (caller.uid <= 0) {
         throw new Error('[[error:invalid-uid]]');
     }
-    const calledUidAsString: string = caller.uid as string;
+    const calledUidAsString: string = (caller.uid).toString();
     const dataUidAsString: string = data.uid as string;
     const isSelf: boolean = parseInt(calledUidAsString, 10) === parseInt(dataUidAsString, 10);
     const groupName: string = await groups.getGroupNameByGroupSlug(data.slug) as string;

@@ -95,7 +95,7 @@ topicsAPI.reply = async function (caller, data) {
 
     socketHelpers.notifyNew(caller.uid, 'newPost', result);
 
-    if (payload.req.body.isAnonymous){
+    if (payload.req.body.isAnonymous) {
         postObj[0].user.displayname = 'Anonymous';
     }
 

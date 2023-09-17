@@ -187,8 +187,8 @@ module.exports = function (Topics) {
 
         // making sure anonymous username is actually anonymous
         if (data.isAnonymous) {
-            postData.user.displayname = "Anonymous";
-            postData.user.userslug = " ";
+            postData.user.displayname = 'Anonymous';
+            postData.user.userslug = '';
         }
 
         const settings = await user.getSettings(uid);
