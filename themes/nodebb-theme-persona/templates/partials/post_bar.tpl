@@ -3,6 +3,11 @@
         <span class="hidden-xs">[[topic:loading_more_posts]]</span> <i class="fa fa-refresh fa-spin"></i>
     </span>
 
+    <div class="search-bar" style="margin-left: 10px; padding-left: 5px;">
+        <input type="text" id="searchInput" placeholder="Search by Username..." style="width: 200px;">
+        <button id="searchButton" class="btn btn-sm btn-primary">Search</button>
+    </div>
+
     <!-- IF loggedIn -->
     <button component="topic/mark-unread" class="btn btn-sm btn-default" title="[[topic:mark_unread]]">
         <i class="fa fa-fw fa-inbox"></i><span class="visible-sm-inline visible-md-inline visible-lg-inline"></span>
