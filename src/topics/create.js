@@ -182,12 +182,12 @@ module.exports = function (Topics) {
         let postData = await posts.create(data);
         postData = await onNewPost(postData, data);
         // making sure anonymous username is actually anonymous
-        if (data.isAnonymous) {
-            postData.user.displayname = 'Anonymous';
-            postData.user.userslug = '';
-            postData.user.status = 'offline';
-            postData.user.picture = '/assets/images/anonymous.png';
-        }
+        // if (data.isAnonymous) {
+        //     postData.user.displayname = 'Anonymous';
+        //     postData.user.userslug = '';
+        //     postData.user.status = 'offline';
+        //     postData.user.picture = '/assets/images/anonymous.png';
+        // }
 
         const settings = await user.getSettings(uid);
         if (uid > 0 && settings.followTopicsOnReply) {
