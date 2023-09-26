@@ -155,9 +155,6 @@ module.exports = function (Topics) {
 
     Topics.reply = async function (data) {
         data = await plugins.hooks.fire('filter:topic.reply', data);
-        if (data.isAnonymous) {
-            data.uid = 3;
-        }
         const { tid } = data;
         const { uid } = data;
 
