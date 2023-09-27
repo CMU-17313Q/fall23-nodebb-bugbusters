@@ -165,6 +165,7 @@ module.exports = function (Categories) {
                 topic.user = {
                     username: 'Anonymous',
                     displayname: 'Anonymous',
+                    picture: '/assets/images/anonymous.png',
                 };
             }
             if (!topic.scheduled && topic.deleted && !topic.isOwner) {

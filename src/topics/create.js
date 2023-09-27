@@ -183,11 +183,12 @@ module.exports = function (Topics) {
         let postData = await posts.create(data);
         postData = await onNewPost(postData, data);
         // making sure anonymous username is actually anonymous
-        if (postData.isAnonymous && !postData.selfPost){
+        if (postData.isAnonymous && !postData.selfPost) {
             postData.uid = 0;
             postData.user = {
                 username: 'Anonymous',
                 displayname: 'Anonymous',
+                picture: '/assets/images/anonymous.png',
             };
         }
 

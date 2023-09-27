@@ -215,7 +215,7 @@ Topics.getTopicWithPosts = async function (topicData, set, uid, start, stop, rev
 
     const result = await plugins.hooks.fire('filter:topic.get', { topic: topicData, uid: uid });
 
-    if (topicData.isAnonymous){
+    if (topicData.isAnonymous) {
         topicData.uid = 0;
     }
     return result.topic;

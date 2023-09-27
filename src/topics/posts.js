@@ -140,11 +140,12 @@ module.exports = function (Topics) {
                 postObj.replies = replies[i];
                 postObj.selfPost = parseInt(uid, 10) > 0 && parseInt(uid, 10) === postObj.uid;
 
-                if (postObj.isAnonymous && !postObj.selfPost){
+                if (postObj.isAnonymous && !postObj.selfPost) {
                     postObj.uid = 0;
                     postObj.user = {
                         username: 'Anonymous',
                         displayname: 'Anonymous',
+                        picture: '/assets/images/anonymous.png',
                     };
                 }
                 // Username override for guests, if enabled
