@@ -27,6 +27,8 @@ require('./queue')(Posts);
 require('./diffs')(Posts);
 require('./uploads')(Posts);
 
+
+
 Posts.exists = async function (pids) {
     return await db.exists(
         Array.isArray(pids) ? pids.map(pid => `post:${pid}`) : `post:${pids}`
@@ -100,5 +102,60 @@ Posts.modifyPostByPrivilege = function (post, privileges) {
         }
     }
 };
+
+Posts.getPostsByPidsForUser = async function (pids, specifiedUserId) {
+    if (!Array.isArray(pids) || !pids.length) {
+        return [];
+    }
+    const brdk = await Posts.getPostsFields(pids, ['uid']);
+    console.log(pids);
+    console.log(brdk);
+    // Fetch posts data for the specified pids
+    let posts = await Posts.getPostsData(pids,['uid']);
+    console.log(posts)
+    console.log("here:", posts.uid)
+
+
+    // Filter the posts to include only those made by the specified user
+    posts = posts.filter(post => post && post.uid === specifiedUserId);
+
+
+
+    // Parse the posts
+    posts = await Promise.all(posts.map(Posts.parsePost));
+
+
+    const data = await plugins.hooks.fire('filter:post.getPosts', { posts: posts, uid: specifiedUserId });
+   
+    if (!data || !Array.isArray(data.posts)) {
+        return [];
+    }};
+
+
+async function getUserPostIds() {
+    const userPostIds = await Posts.getPostsByPidsForUser(allPosts, 2);
+    console.log(userPostIds);
+}
+
+
+const allPosts = [
+    { pid: 1, uid: 2 },
+    { pid: 2, uid: 3 },
+    { pid: 3, uid: 2 },
+    
+];
+
+// Call the async function
+getUserPostIds();
+// const winston = require('winston');
+
+// // Create a Winston logger instance
+// const logger = winston.createLogger({
+//     transports: [
+//         new winston.transports.Console()
+//     ]
+// });
+// logger.info('This is an info message');
+// logger.error('This is an error message');
 
 require('../promisify')(Posts);
