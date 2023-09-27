@@ -48,6 +48,9 @@ module.exports = function (Topics) {
         if (!postData.length) {
             return [];
         }
+        if (searchUserId) {
+            postData = postData.filter(p => p.uid == searchUserId);
+        }
         let replies = postData;
         if (topicData.mainPid && start === 0) {
             postData[0].index = 0;
