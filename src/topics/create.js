@@ -187,7 +187,6 @@ module.exports = function (Topics) {
             postData.uid = 0;
             postData.user = {
                 username: 'Anonymous',
-                anon: true,
                 displayname: 'Anonymous',
             };
         }

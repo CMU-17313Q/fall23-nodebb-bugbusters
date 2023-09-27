@@ -164,7 +164,6 @@ module.exports = function (Categories) {
                 topic.uid = 0;
                 topic.user = {
                     username: 'Anonymous',
-                    anon: true,
                     displayname: 'Anonymous',
                 };
             }

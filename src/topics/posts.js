@@ -144,10 +144,8 @@ module.exports = function (Topics) {
                     postObj.uid = 0;
                     postObj.user = {
                         username: 'Anonymous',
-                        anon: true,
                         displayname: 'Anonymous',
                     };
-                    postObj.postTypeAnon = true;
                 }
                 // Username override for guests, if enabled
                 if (meta.config.allowGuestHandles && postObj.uid === 0 && postObj.handle) {
