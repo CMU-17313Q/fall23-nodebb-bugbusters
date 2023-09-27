@@ -48,7 +48,7 @@ module.exports = function (Topics) {
         if (!postData.length) {
             return [];
         }
-        if (searchUserId) {
+        if (searchUserId !== undefined) {
             postData = postData.filter(p => p.uid == searchUserId);
         }
         let replies = postData;
