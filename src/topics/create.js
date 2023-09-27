@@ -189,6 +189,7 @@ module.exports = function (Topics) {
                 username: 'Anonymous',
                 displayname: 'Anonymous',
                 picture: '/assets/images/anonymous.png',
+                status: 'offline',
             };
         }
 

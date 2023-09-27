@@ -166,6 +166,7 @@ module.exports = function (Categories) {
                     username: 'Anonymous',
                     displayname: 'Anonymous',
                     picture: '/assets/images/anonymous.png',
+                    status: 'offline',
                 };
             }
             if (!topic.scheduled && topic.deleted && !topic.isOwner) {
