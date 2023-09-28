@@ -107,11 +107,9 @@ Posts.getPostsByPidsForUser = async function (pids, specifiedUserId) {
     if (!Array.isArray(pids) || !pids.length) {
         return [];
     }
-    const brdk = await Posts.getPostsFields(pids, ['uid']);
-    console.log(pids);
-    console.log(brdk);
+    
     // Fetch posts data for the specified pids
-    let posts = await Posts.getPostsData(pids,['uid']);
+    let posts = await Posts.getPostsFields(pids,['uid']);
     console.log(posts)
     console.log("here:", posts.uid)
 
