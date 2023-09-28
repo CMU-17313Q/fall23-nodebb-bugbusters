@@ -171,6 +171,8 @@ get:
                                     description: HTML that is injected into `topic.tpl` of themes that support custom profile info
                         editor:
                           nullable: true
+                        isAnonymous:
+                          type: boolean
                         bookmarked:
                           type: boolean
                         upvoted:
