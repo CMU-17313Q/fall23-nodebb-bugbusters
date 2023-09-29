@@ -96,6 +96,7 @@ describe('upload methods', () => {
         });
     });
 
+
     describe('.list()', () => {
         it('should display the uploaded files for a specific post', (done) => {
             posts.uploads.list(pid, (err, uploads) => {
@@ -416,47 +417,95 @@ describe('post uploads management', () => {
     });
 
 
-    describe('getPostsByPidsForUser', () => {
+    describe('post uploads management', () => {
+        let uid;
+        let cid;
+        let topic;
+        let reply;
+    
+        // Create a consistent test setup
+        before(async () => {
+            // Create a test user
+            uid = await user.create({
+                username: 'uploads user',
+                password: 'abracadabra',
+                gdpr_consent: 1,
+            });
+    
+            // Create a test category
+            ({ cid } = await categories.create({
+                name: 'Test Category',
+                description: 'Test category created by testing script',
+            }));
+    
+            // Create a topic with uploads for testing
+            const topicPostData = await topics.post({
+                uid,
+                cid,
+                title: 'topic to test uploads with',
+                content: '[abcdef](/assets/uploads/files/abracadabra.png)',
+            });
+    
+            // Create a reply with uploads for testing
+            const replyData = await topics.reply({
+                uid,
+                tid: topicPostData.topicData.tid,
+                timestamp: Date.now(),
+                content: '[abcdef](/assets/uploads/files/shazam.jpg)',
+            });
+    
+            // Store topic and reply data for use in tests
+            topic = topicPostData;
+            reply = replyData;
+            console.log("Topic:",topic);
+        });
+    
         it('should return posts made by the specified user', async () => {
-            // Assuming you have an array of post objects
-            const allPosts = [
-                { pid: 1, uid: 2 },
-                { pid: 2, uid: 3 },
-                { pid: 3, uid: 2 },
-                // ... other post objects
-            ];
-    
             // Specify the user ID for filtering
-            const specifiedUserId = 2;
+            const specifiedUid = 2;
     
-            // Call your function
-            const userPostIds = await posts.getPostsByPidsForUser(allPosts.map(post => post.pid), specifiedUserId);
+            // Call your function with appropriate test data
+            const userPosts = await posts.getPostsByPidsForUser([1, 2, 3], specifiedUid, specifiedUid);
+            userPosts.forEach(post => {
+                delete post.timestamp;
+                delete post.timestampISO;
+            });
+            console.log("hereeeeee:", userPosts);
+            // Specify the expected posts made by the user
+            const expectedUserPosts = [
+                {
+                    pid: 3,
+                    uid: 2,
+                    tid:2,
+                    content: '[abcdef](/assets/uploads/files/abracadabra.png)',
+                    deleted: 0,
+                    upvotes: 0,
+                    downvotes: 0,
+                    deleterUid: 0,
+                    edited: 0,
+                    replies: 0,
+                    bookmarks: 0,
+                    votes: 0,
+                    editedISO: ''
+                },
+            ];
+            console.log("expected:", expectedUserPosts);
     
-            // Specify the expected post IDs made by the user
-            const expectedPostIds = [1, 3]; // Assuming user with uid 2 made posts with pids 1 and 3
-    
-            // Assert that the result matches the expected post IDs
-            assert.deepStrictEqual(userPostIds, expectedPostIds);
+            // Assert that the result matches the expected posts made by the user
+            assert.deepStrictEqual(userPosts, expectedUserPosts);
         });
     
         it('should return an empty array when no posts match the user', async () => {
-            // Assuming you have an array of post objects with no posts made by the specified user
-            const allPosts = [
-                { pid: 1, uid: 3 },
-                { pid: 2, uid: 4 },
-                { pid: 3, uid: 5 },
-                // ... other post objects
-            ];
+            // Specify the user ID for filtering (a user that doesn't match any posts)
+            const specifiedUid = 4;
     
-            // Specify the user ID for filtering
-            const specifiedUserId = 2; // A user ID that doesn't match any posts
-    
-            // Call your function
-            const userPostIds = await posts.getPostsByPidsForUser(allPosts.map(post => post.pid), specifiedUserId);
+            // Call your function with appropriate test data
+            const userPosts = await posts.getPostsByPidsForUser([1, 2, 3], specifiedUid, specifiedUid);
     
             // Assert that the result is an empty array
-            assert.deepStrictEqual(userPostIds, []);
+            assert.deepStrictEqual(userPosts, []);
         });
     });
+    
     
 });
