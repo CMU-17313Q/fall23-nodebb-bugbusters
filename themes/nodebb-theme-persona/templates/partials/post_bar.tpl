@@ -34,7 +34,9 @@
 
         const searchButton = document.getElementById("searchButton");
         searchButton.addEventListener("click", function() {
-            console.log("User input:", username_searched);
+            console.log(username_searched);
         });
+
+        
     </script>
 </div>
