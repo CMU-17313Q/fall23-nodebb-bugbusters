@@ -414,4 +414,49 @@ describe('post uploads management', () => {
             done();
         });
     });
+
+
+    describe('getPostsByPidsForUser', () => {
+        it('should return posts made by the specified user', async () => {
+            // Assuming you have an array of post objects
+            const allPosts = [
+                { pid: 1, uid: 2 },
+                { pid: 2, uid: 3 },
+                { pid: 3, uid: 2 },
+                // ... other post objects
+            ];
+    
+            // Specify the user ID for filtering
+            const specifiedUserId = 2;
+    
+            // Call your function
+            const userPostIds = await posts.getPostsByPidsForUser(allPosts.map(post => post.pid), specifiedUserId);
+    
+            // Specify the expected post IDs made by the user
+            const expectedPostIds = [1, 3]; // Assuming user with uid 2 made posts with pids 1 and 3
+    
+            // Assert that the result matches the expected post IDs
+            assert.deepStrictEqual(userPostIds, expectedPostIds);
+        });
+    
+        it('should return an empty array when no posts match the user', async () => {
+            // Assuming you have an array of post objects with no posts made by the specified user
+            const allPosts = [
+                { pid: 1, uid: 3 },
+                { pid: 2, uid: 4 },
+                { pid: 3, uid: 5 },
+                // ... other post objects
+            ];
+    
+            // Specify the user ID for filtering
+            const specifiedUserId = 2; // A user ID that doesn't match any posts
+    
+            // Call your function
+            const userPostIds = await posts.getPostsByPidsForUser(allPosts.map(post => post.pid), specifiedUserId);
+    
+            // Assert that the result is an empty array
+            assert.deepStrictEqual(userPostIds, []);
+        });
+    });
+    
 });
