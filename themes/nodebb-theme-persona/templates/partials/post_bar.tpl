@@ -26,15 +26,15 @@
     <script>
        
         const searchInput = document.getElementById("searchInput");
-        let username_searched = "";
+        let searchUserId = "";
 
         searchInput.addEventListener("input", function(event) {
-            username_searched = event.target.value;
+            searchUserId = event.target.value;
         });
 
         const searchButton = document.getElementById("searchButton");
         searchButton.addEventListener("click", function() {
-            console.log(username_searched);
+            console.log(searchUserId);
         });
 
         
