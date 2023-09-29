@@ -103,57 +103,23 @@ Posts.modifyPostByPrivilege = function (post, privileges) {
     }
 };
 
-Posts.getPostsByPidsForUser = async function (pids, specifiedUserId) {
+Posts.getPostsByPidsForUser = async function (pids, uid, specifiedUid) {
     if (!Array.isArray(pids) || !pids.length) {
         return [];
     }
-    
-    // Fetch posts data for the specified pids
-    let posts = await Posts.getPostsFields(pids,['uid']);
-    console.log(posts)
-    console.log("here:", posts.uid)
-
-
-    // Filter the posts to include only those made by the specified user
-    posts = posts.filter(post => post && post.uid === specifiedUserId);
-
-
-
-    // Parse the posts
+    let posts = await Posts.getPostsData(pids);
     posts = await Promise.all(posts.map(Posts.parsePost));
 
+    // Filter the posts to include only those made by the specified user (specifiedUid)
+    posts = posts.filter(post => post.uid === specifiedUid);
 
-    const data = await plugins.hooks.fire('filter:post.getPosts', { posts: posts, uid: specifiedUserId });
-   
-    if (!data || !Array.isArray(data.posts)) {
-        return [];
-    }};
-
-
-async function getUserPostIds() {
-    const userPostIds = await Posts.getPostsByPidsForUser(allPosts, 2);
-    console.log(userPostIds);
-}
+    const data = await plugins.hooks.fire('filter:post.getPosts', { posts: posts, uid: uid });
+    if (data && Array.isArray(data.posts)) {
+        return data.posts;
+    } return [];
+};
 
 
-const allPosts = [
-    { pid: 1, uid: 2 },
-    { pid: 2, uid: 3 },
-    { pid: 3, uid: 2 },
-    
-];
 
-// Call the async function
-getUserPostIds();
-// const winston = require('winston');
-
-// // Create a Winston logger instance
-// const logger = winston.createLogger({
-//     transports: [
-//         new winston.transports.Console()
-//     ]
-// });
-// logger.info('This is an info message');
-// logger.error('This is an error message');
 
 require('../promisify')(Posts);
