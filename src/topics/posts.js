@@ -20,7 +20,7 @@ module.exports = function (Topics) {
         await Topics.addPostToTopic(postData.tid, postData);
     };
 
-    Topics.getTopicPosts = async function (topicData, set, start, stop, uid, reverse) {
+    Topics.getTopicPosts = async function (topicData, set, start, stop, uid, reverse, searchUserId) {
         if (!topicData) {
             return [];
         }
@@ -47,6 +47,9 @@ module.exports = function (Topics) {
         let postData = await posts.getPostsByPids(pids, uid);
         if (!postData.length) {
             return [];
+        }
+        if (searchUserId !== undefined) {
+            postData = postData.filter(p => p.uid == searchUserId);
         }
         let replies = postData;
         if (topicData.mainPid && start === 0) {
