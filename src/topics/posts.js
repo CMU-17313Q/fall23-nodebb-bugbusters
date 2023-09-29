@@ -49,7 +49,7 @@ module.exports = function (Topics) {
             return [];
         }
         if (searchUserId !== undefined) {
-            postData = postData.filter(p => p.uid == searchUserId);
+            postData = postData.filter(p => p.uid === searchUserId);
         }
         let replies = postData;
         if (topicData.mainPid && start === 0) {
