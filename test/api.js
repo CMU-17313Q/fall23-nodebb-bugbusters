@@ -585,9 +585,7 @@ describe('API', async () => {
             if (additionalProperties) { // All bets are off
                 return;
             }
-            if (prop !== 'isAnonymous') {
-                assert(schema[prop], `"${prop}" was found in response, but is not defined in schema (path: ${method} ${path}, context: ${context})`);
-            }
+            assert(schema[prop], `"${prop}" was found in response, but is not defined in schema (path: ${method} ${path}, context: ${context})`);
         });
     }
 });
