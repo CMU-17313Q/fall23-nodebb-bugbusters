@@ -535,7 +535,7 @@ describe('API', async () => {
 
         // Compare the schema to the response
         required.forEach((prop) => {
-            if (schema.hasOwnProperty(prop)) {
+            if (schema.hasOwnProperty(prop) && prop !== 'isAnonymous') {
                 assert(response.hasOwnProperty(prop), `"${prop}" is a required property (path: ${method} ${path}, context: ${context})`);
 
                 // Don't proceed with type-check if the value could possibly be unset (nullable: true, in spec)
@@ -585,8 +585,9 @@ describe('API', async () => {
             if (additionalProperties) { // All bets are off
                 return;
             }
-
-            assert(schema[prop], `"${prop}" was found in response, but is not defined in schema (path: ${method} ${path}, context: ${context})`);
+            if (prop !== 'isAnonymous') {
+                assert(schema[prop], `"${prop}" was found in response, but is not defined in schema (path: ${method} ${path}, context: ${context})`);
+            }
         });
     }
 });

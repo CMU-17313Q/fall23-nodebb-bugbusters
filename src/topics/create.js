@@ -32,6 +32,7 @@ module.exports = function (Topics) {
             timestamp: timestamp,
             lastposttime: 0,
             postcount: 0,
+            isAnonymous: data.isAnonymous,
             viewcount: 0,
         };
 
@@ -182,11 +183,14 @@ module.exports = function (Topics) {
         let postData = await posts.create(data);
         postData = await onNewPost(postData, data);
         // making sure anonymous username is actually anonymous
-        if (data.isAnonymous) {
-            postData.user.displayname = 'Anonymous';
-            postData.user.userslug = '';
-            postData.user.status = 'offline';
-            postData.user.picture = '/assets/images/anonymous.png';
+        if (postData.isAnonymous && !postData.selfPost) {
+            postData.uid = 0;
+            postData.user = {
+                username: 'Anonymous',
+                displayname: 'Anonymous',
+                picture: '/assets/images/anonymous.png',
+                status: 'offline',
+            };
         }
 
         const settings = await user.getSettings(uid);

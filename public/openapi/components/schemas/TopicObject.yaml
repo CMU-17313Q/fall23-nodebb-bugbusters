@@ -29,6 +29,8 @@ TopicObject:
               type: string
             disabled:
               type: number
+        isAnonymous:
+            type: boolean
         user:
           type: object
           properties:
@@ -98,6 +100,8 @@ TopicObject:
               description: A user identifier
             timestamp:
               type: number
+            isAnonymous:
+              type: boolean
             tid:
               type: number
               description: A topic identifier

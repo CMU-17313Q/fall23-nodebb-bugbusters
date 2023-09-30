@@ -160,6 +160,15 @@ module.exports = function (Categories) {
         }
 
         topics.forEach((topic) => {
+            if (topic.isAnonymous) {
+                topic.uid = 0;
+                topic.user = {
+                    username: 'Anonymous',
+                    displayname: 'Anonymous',
+                    picture: '/assets/images/anonymous.png',
+                    status: 'offline',
+                };
+            }
             if (!topic.scheduled && topic.deleted && !topic.isOwner) {
                 topic.title = '[[topic:topic_is_deleted]]';
                 if (topic.hasOwnProperty('titleRaw')) {
