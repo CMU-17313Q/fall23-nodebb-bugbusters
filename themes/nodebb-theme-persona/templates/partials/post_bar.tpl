@@ -22,4 +22,21 @@
     <!-- IMPORT partials/thread_tools.tpl -->
     </div>
     <!-- IMPORT partials/topic/reply-button.tpl -->
+
+    <script>
+       
+        const searchInput = document.getElementById("searchInput");
+        let searchUserId = "";
+
+        searchInput.addEventListener("input", function(event) {
+            searchUserId = event.target.value;
+        });
+
+        const searchButton = document.getElementById("searchButton");
+        searchButton.addEventListener("click", function() {
+            console.log(searchUserId);
+        });
+
+        
+    </script>
 </div>
