@@ -14,8 +14,6 @@ PostObject:
       description: A user identifier
     timestamp:
       type: number
-    isAnonymous:
-      type: boolean
     deleted:
       type: boolean
     upvotes:
