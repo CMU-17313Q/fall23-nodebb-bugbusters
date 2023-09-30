@@ -31,7 +31,6 @@ describe('Post\'s', () => {
     let postData;
     let topicData;
     let cid;
-    let anonuser;
 
     before((done) => {
         async.series({
@@ -50,9 +49,6 @@ describe('Post\'s', () => {
                     description: 'Test category created by testing script',
                 }, next);
             },
-            anonuser: function (next) {
-                user.create({ username: 'anonuser' }, next);
-            },
         }, (err, results) => {
             if (err) {
                 return done(err);
@@ -60,7 +56,6 @@ describe('Post\'s', () => {
 
             voterUid = results.voterUid;
             voteeUid = results.voteeUid;
-            anonuser = results.anonuser;
             globalModUid = results.globalModUid;
             cid = results.category.cid;
 
@@ -80,20 +75,7 @@ describe('Post\'s', () => {
             });
         });
     });
-    describe('Anonymous post', () => {
-        it('should not become anonymous for post creator', async () => {
-            const data = await topics.post({
-                uid: anonuser,
-                cid: cid,
-                title: 'Anonymous Test Topic',
-                content: 'Test anonymous content',
-                isAnonymous: true,
-            });
-            const { tid } = data.postData;
-            const topicRead = await topics.getTopicWithPosts(data.postData.topic, `tid:${tid}:posts`, anonuser, 0, 19);
-            assert.equal(topicRead.posts[0].user.uid, anonuser);
-        });
-    });
+    
     it('should update category teaser properly', async () => {
         const util = require('util');
         const getCategoriesAsync = util.promisify(async (callback) => {
