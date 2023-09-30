@@ -75,7 +75,6 @@ describe('Post\'s', () => {
             });
         });
     });
-    
     it('should update category teaser properly', async () => {
         const util = require('util');
         const getCategoriesAsync = util.promisify(async (callback) => {
