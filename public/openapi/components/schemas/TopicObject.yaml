@@ -30,7 +30,7 @@ TopicObject:
             disabled:
               type: number
         isAnonymous:
-            type: boolean
+            type: string
         user:
           type: object
           properties:
@@ -101,7 +101,7 @@ TopicObject:
             timestamp:
               type: number
             isAnonymous:
-              type: boolean
+              type: string
             tid:
               type: number
               description: A topic identifier

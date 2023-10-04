@@ -172,7 +172,7 @@ get:
                         editor:
                           nullable: true
                         isAnonymous:
-                          type: boolean
+                          type: string
                         bookmarked:
                           type: boolean
                         upvoted:
