@@ -15,7 +15,7 @@ PostObject:
     timestamp:
       type: number
     isAnonymous:
-      type: boolean
+      type: string
     deleted:
       type: boolean
     upvotes:

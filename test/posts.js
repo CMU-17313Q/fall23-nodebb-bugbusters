@@ -87,11 +87,18 @@ describe('Post\'s', () => {
                 cid: cid,
                 title: 'Anonymous Test Topic',
                 content: 'Test anonymous content',
-                isAnonymous: true,
+                isAnonymous: 'true',
             });
             const { tid } = data.postData;
             const topicRead = await topics.getTopicWithPosts(data.postData.topic, `tid:${tid}:posts`, anonuser, 0, 19);
             assert.equal(topicRead.posts[0].user.uid, anonuser);
+        });
+        it('should update isAnonymous from false to true', async () => {
+            const testUser = await user.create({ username: 'Boushrabnd' });
+            const post = await posts.create({ uid: testUser, cid: cid, title: 'Test Title', content: 'This is a test post.', isAnonymous: 'true' });
+            const { pid } = post;
+            const res = await posts.getPostData(pid);
+            assert.equal(res.isAnonymous, 'true');
         });
     });
     it('should update category teaser properly', async () => {

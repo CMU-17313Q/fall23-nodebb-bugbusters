@@ -143,7 +143,7 @@ module.exports = function (Topics) {
                 postObj.replies = replies[i];
                 postObj.selfPost = parseInt(uid, 10) > 0 && parseInt(uid, 10) === postObj.uid;
 
-                if (postObj.isAnonymous && !postObj.selfPost) {
+                if (postObj.isAnonymous === 'true' && !postObj.selfPost) {
                     postObj.uid = 0;
                     postObj.user = {
                         username: 'Anonymous',
@@ -364,7 +364,7 @@ module.exports = function (Topics) {
 
             replyPids.forEach((replyPid) => {
                 const replyData = pidMap[replyPid];
-                if (!uidsUsed[replyData.uid] && currentData.users.length < 6 && !replyData.isAnonymous) {
+                if (!uidsUsed[replyData.uid] && currentData.users.length < 6 && !replyData.isAnonymous === 'true') {
                     currentData.users.push(uidMap[replyData.uid]);
                     uidsUsed[replyData.uid] = true;
                 }
