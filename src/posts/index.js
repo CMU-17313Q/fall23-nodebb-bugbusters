@@ -101,4 +101,23 @@ Posts.modifyPostByPrivilege = function (post, privileges) {
     }
 };
 
+Posts.getPostsByPidsForUser = async function (pids, uid, specifiedUid) {
+    if (!Array.isArray(pids) || !pids.length) {
+    return [];
+    }
+    let posts = await Posts.getPostsData(pids);
+    posts = await Promise.all(posts.map(Posts.parsePost));
+    
+    
+    // Filter the posts to include only those made by the specified user (specifiedUid)
+    posts = posts.filter(post => post && post.uid === specifiedUid);
+    
+    
+    const data = await plugins.hooks.fire('filter:post.getPosts', { posts: posts, uid: uid });
+    if (data && Array.isArray(data.posts)) {
+    return data.posts;
+    } return [];
+    };
+    
+
 require('../promisify')(Posts);

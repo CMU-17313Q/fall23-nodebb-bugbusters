@@ -414,4 +414,83 @@ describe('post uploads management', () => {
             done();
         });
     });
+    describe('post uploads management', () => {
+        let uid;
+        let cid;
+        let topic;
+        let reply;
+        // Create a consistent test setup
+        before(async () => {
+            // Create a test user
+            uid = await user.create({
+                username: 'uploads user',
+                password: 'abracadabra',
+                gdpr_consent: 1,
+            });
+            // Create a test category
+            ({ cid } = await categories.create({
+                name: 'Test Category',
+                description: 'Test category created by testing script',
+            }));
+            // Create a topic with uploads for testing
+            const topicPostData = await topics.post({
+                uid,
+                cid,
+                title: 'topic to test uploads with',
+                content: '[abcdef](/assets/uploads/files/abracadabra.png)',
+            });
+            // Create a reply with uploads for testing
+            const replyData = await topics.reply({
+                uid,
+                tid: topicPostData.topicData.tid,
+                timestamp: Date.now(),
+                content: '[abcdef](/assets/uploads/files/shazam.jpg)',
+            });
+            // Store topic and reply data for use in tests
+            topic = topicPostData;
+            reply = replyData;
+            console.log('Topic:', topic);
+        });
+        it('should return posts made by the specified user', async () => {
+            // Specify the user ID for filtering
+            const specifiedUid = 2;
+            // Call your function with appropriate test data
+            const userPosts = await posts.getPostsByPidsForUser([1, 2, 3], specifiedUid, specifiedUid);
+            userPosts.forEach((post) => {
+                delete post.timestamp;
+                delete post.timestampISO;
+            });
+            console.log('hereeeeee:', userPosts);
+            // Specify the expected posts made by the user
+            const expectedUserPosts = [
+                {
+                    pid: 3,
+                    uid: 2,
+                    tid: 2,
+                    content: '[abcdef](/assets/uploads/files/abracadabra.png)',
+                    deleted: 0,
+                    upvotes: 0,
+                    downvotes: 0,
+                    deleterUid: 0,
+                    edited: 0,
+                    replies: 0,
+                    bookmarks: 0,
+                    votes: 0,
+                    editedISO: '',
+                },
+            ];
+            console.log('expected:', expectedUserPosts);
+            // Assert that the result matches the expected posts made by the user
+            assert.deepStrictEqual(userPosts, expectedUserPosts);
+        });
+        it('should return an empty array when no posts match the user', async () => {
+            // Specify the user ID for filtering (a user that doesn't match any posts)
+            const specifiedUid = 4;
+            // Call your function with appropriate test data
+            const userPosts = await posts.getPostsByPidsForUser([1, 2, 3], specifiedUid, specifiedUid);
+            // Assert that the result is an empty array
+            assert.deepStrictEqual(userPosts, []);
+        });
+    });
 });
+
