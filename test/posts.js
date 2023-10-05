@@ -95,6 +95,7 @@ describe('Post\'s', () => {
             const topicRead = await topics.getTopicWithPosts(data.postData.topic, `tid:${tid}:posts`, anonuser, 0, 19);
             assert.equal(topicRead.posts[0].user.uid, anonuser);
         });
+        // changing something to fix the build error
         it('should anonimize for a non post author', async () => {
             const data = await topics.post({
                 uid: anonuser,
