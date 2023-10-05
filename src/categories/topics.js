@@ -158,14 +158,16 @@ module.exports = function (Categories) {
         if (!Array.isArray(topics) || !topics.length || privileges.view_deleted) {
             return;
         }
-
+        const randomUsernames = ['Anonymous Monkey', 'Anonymous Dolphine', 'Anonymous Dino', 'Anonymous Crocodile'];
+        const randomUsername = randomUsernames[Math.floor(Math.random() * randomUsernames.length)];
+        const randompath = `/assets/images/${randomUsername}.png`;
         topics.forEach((topic) => {
             if (topic.isAnonymous === 'true') {
                 topic.uid = 0;
                 topic.user = {
-                    username: 'Anonymous',
-                    displayname: 'Anonymous',
-                    picture: '/assets/images/anonymous.png',
+                    username: randomUsername,
+                    displayname: randomUsername,
+                    picture: randompath,
                     status: 'offline',
                 };
             }
