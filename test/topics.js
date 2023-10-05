@@ -584,6 +584,26 @@ describe('Topic\'s', () => {
                     assert.strictEqual(postsData[i].content, `topic reply ${i}`);
                 }
             });
+
+            it('should return all posts without filtering if searchUserId is undefined', async () => {
+                const topicData = await topics.getTopicData(tid);
+                const postsData = await topics.getTopicPosts(topicData, `tid:${tid}:posts`, 0, -1, topic.userId, false, undefined);
+                assert.strictEqual(postsData.length, 31);
+                assert.strictEqual(postsData[0].content, 'main post');
+                for (let i = 1; i < 30; i++) {
+                    assert.strictEqual(postsData[i].content, `topic reply ${i}`);
+                }
+            });
+
+            it('should return all posts for user if searchUserId is defined', async () => {
+                const topicData = await topics.getTopicData(tid);
+                let postsData = await topics.getTopicPosts(topicData, `tid:${tid}:posts`, 0, -1, topic.userId, false, undefined);
+                const userId = postsData[0].uid;
+                postsData = await topics.getTopicPosts(topicData, `tid:${tid}:posts`, 0, -1, topic.userId, false, userId);
+                for (let i = 0; i < postsData.length; i++) {
+                    assert.strictEqual(postsData[i].uid, userId);
+                }
+            });
         });
     });
 
