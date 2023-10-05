@@ -12,7 +12,8 @@ The posting and replying anonymously feature allows users to submit questions or
 
 2. **Visibility:**
    - Users who have posted anonymously can still view their own posts with their username and account details.
-   - Other users, upon viewing the post, will see the display name as "Anonymous" and will not have access to the author's account information.
+   - Other users, upon viewing the post, will see a randomized anonymous username and profile picture
+   - and will not have access to the author's account information.
 
 ### User Testing Instructions
 1. **Setup:**
@@ -40,7 +41,7 @@ The posting and replying anonymously feature allows users to submit questions or
    - **Scenario 3: Viewing Anonymous Posts**
      1. Log out of the current account.
      2. Register or log in with a different/new account.
-     3. Verify that anonymous posts/replies are visible under an anonymous username, and access to the author's account is restricted.
+     3. Verify that anonymous posts/replies are visible under a randomized anonymous username and profile picture,            and that access to the author's account is restricted.
 
 ### Automated Tests
 Automated tests have been implemented to ensure the reliability and functionality of the anonymous posting feature.
