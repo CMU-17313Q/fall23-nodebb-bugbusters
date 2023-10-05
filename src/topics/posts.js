@@ -44,9 +44,12 @@ module.exports = function (Topics) {
         if (topicData.mainPid && start === 0) {
             pids.unshift(topicData.mainPid);
         }
-        let postData = await posts.getPostsByPidsForUser(pids, uid, searchUserId);
+        let postData = await posts.getPostsByPids(pids, uid);
         if (!postData.length) {
             return [];
+        }
+        if (searchUserId !== undefined) {
+            postData = postData.filter(p => p.uid === searchUserId);
         }
         let replies = postData;
         if (topicData.mainPid && start === 0) {
@@ -139,13 +142,15 @@ module.exports = function (Topics) {
                 postObj.votes = postObj.votes || 0;
                 postObj.replies = replies[i];
                 postObj.selfPost = parseInt(uid, 10) > 0 && parseInt(uid, 10) === postObj.uid;
-
+                const randomUsernames = ['Anonymous Monkey', 'Anonymous Dolphine', 'Anonymous Dino', 'Anonymous Crocodile'];
+                const randomUsername = randomUsernames[Math.floor(Math.random() * randomUsernames.length)];
+                const randompath = `/assets/images/${randomUsername}.png`;
                 if (postObj.isAnonymous === 'true' && !postObj.selfPost) {
                     postObj.uid = 0;
                     postObj.user = {
-                        username: 'Anonymous',
-                        displayname: 'Anonymous',
-                        picture: '/assets/images/anonymous.png',
+                        username: randomUsername,
+                        displayname: randomUsername,
+                        picture: randompath,
                         status: 'offline',
                     };
                 }
