@@ -32,6 +32,7 @@ describe('Post\'s', () => {
     let topicData;
     let cid;
     let anonuser;
+    let otheruser;
 
     before((done) => {
         async.series({
@@ -61,6 +62,7 @@ describe('Post\'s', () => {
             voterUid = results.voterUid;
             voteeUid = results.voteeUid;
             anonuser = results.anonuser;
+            otheruser = results.otheruser;
             globalModUid = results.globalModUid;
             cid = results.category.cid;
 
@@ -92,6 +94,18 @@ describe('Post\'s', () => {
             const { tid } = data.postData;
             const topicRead = await topics.getTopicWithPosts(data.postData.topic, `tid:${tid}:posts`, anonuser, 0, 19);
             assert.equal(topicRead.posts[0].user.uid, anonuser);
+        });
+        it('should anonimize for a non post author', async () => {
+            const data = await topics.post({
+                uid: anonuser,
+                cid: cid,
+                title: 'Anonymous Test Topic',
+                content: 'Test anonymous content',
+                isAnonymous: 'true',
+            });
+            const { tid } = data.postData;
+            const topicRead = await topics.getTopicWithPosts(data.postData.topic, `tid:${tid}:posts`, otheruser, 0, 19);
+            assert.equal(topicRead.posts[0].user.displayname.slice(0, 9), 'Anonymous');
         });
         it('should update isAnonymous from false to true', async () => {
             const testUser = await user.create({ username: 'Boushrabnd' });
