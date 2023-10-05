@@ -44,12 +44,9 @@ module.exports = function (Topics) {
         if (topicData.mainPid && start === 0) {
             pids.unshift(topicData.mainPid);
         }
-        let postData = await posts.getPostsByPids(pids, uid);
+        let postData = await posts.getPostsByPidsForUser(pids, uid, searchUserId);
         if (!postData.length) {
             return [];
-        }
-        if (searchUserId !== undefined) {
-            postData = postData.filter(p => p.uid === searchUserId);
         }
         let replies = postData;
         if (topicData.mainPid && start === 0) {
