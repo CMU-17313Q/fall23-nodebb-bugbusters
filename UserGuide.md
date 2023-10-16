@@ -45,14 +45,16 @@ The posting and replying anonymously feature allows users to submit questions or
 
 ### Automated Tests
 Automated tests have been implemented to ensure the reliability and functionality of the anonymous posting feature.
-
+Link: https://github.com/CMU-17313Q/fall23-nodebb-bugbusters/blob/main/test/posts.js
 1. **Test 1: isAnonymous Attribute**
    - **Description:** This test checks if the 'isAnonymous' boolean attribute, set to true when the checkbox is checked, is saved in the database and is a part of the schema at all times.
    - **Location:** [test/posts.js line 96]
-
 2. **Test 2: Viewing Own Anonymous Posts**
    - **Description:** This test verifies whether authors can still view their own posts made anonymously.
-   - **Location:** [test/posts.js line 83]
+   - **Location:** [test/posts.js line 109]
+3. **Test 3: Viewing Others Anonymous Posts**
+   - **Description:** This test verifies that non authors can not view others anonymous posts.
+   - **Location:** [test/posts.js line 99]
 
 Please refer to the provided test files for detailed test scenarios, implementation details, and coverage rationale.
 
