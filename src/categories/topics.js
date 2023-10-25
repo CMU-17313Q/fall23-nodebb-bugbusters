@@ -1,5 +1,3 @@
-// @flow
-
 'use strict';
 
 const db = require('../database');
@@ -160,8 +158,19 @@ module.exports = function (Categories) {
         if (!Array.isArray(topics) || !topics.length || privileges.view_deleted) {
             return;
         }
-
+        const randomUsernames = ['Anonymous Monkey', 'Anonymous Dolphine', 'Anonymous Dino', 'Anonymous Crocodile'];
+        const randomUsername = randomUsernames[Math.floor(Math.random() * randomUsernames.length)];
+        const randompath = `/assets/images/${randomUsername}.png`;
         topics.forEach((topic) => {
+            if (topic.isAnonymous === 'true') {
+                topic.uid = 0;
+                topic.user = {
+                    username: randomUsername,
+                    displayname: randomUsername,
+                    picture: randompath,
+                    status: 'offline',
+                };
+            }
             if (!topic.scheduled && topic.deleted && !topic.isOwner) {
                 topic.title = '[[topic:topic_is_deleted]]';
                 if (topic.hasOwnProperty('titleRaw')) {
