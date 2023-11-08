@@ -21,27 +21,23 @@ Career.register = async (req, res) => {
             gpa: userData.gpa,
             extra_curricular: userData.extra_curricular,
             num_programming_languages: userData.num_programming_languages,
-            num_past_internships: userData.num_past_internships
+            num_past_internships: userData.num_past_internships,
         }).toString();
 
         const response = await fetch(`https://s456-wgtqgd7dva-uc.a.run.app/predict?${queryParams}`);
-        
         // Check if the request was successful
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        
         const predictionResult = await response.json();
-        
         // If the response does not contain a 'good_employee' key, handle it appropriately
         if (typeof predictionResult.good_employee !== 'number') {
             throw new Error('Invalid prediction response structure');
         }
-        
         // Assign the prediction to the user's career data
         const userCareerData = {
             ...userData, // spread in the original user data
-            prediction: predictionResult.good_employee
+            prediction: predictionResult.good_employee,
         };
 
         await user.setCareerData(req.uid, userCareerData);
