@@ -24,7 +24,7 @@ Career.register = async (req, res) => {
             num_past_internships: userData.num_past_internships,
         }).toString();
 
-        const response = await fetch(`https://s456-wgtqgd7dva-uc.a.run.app/predict?${queryParams}`);
+        const response = await fetch(`hhttps://mlmodel1-wgtqgd7dva-uc.a.run.app/predict?${queryParams}`);
         // Check if the request was successful
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
