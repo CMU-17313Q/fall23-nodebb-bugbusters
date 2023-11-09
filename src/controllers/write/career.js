@@ -1,8 +1,6 @@
 'use strict';
 
-// Import the fetch module
 const fetch = require('node-fetch');
-
 const helpers = require('../helpers');
 const user = require('../../user');
 const db = require('../../database');
@@ -12,33 +10,33 @@ const Career = module.exports;
 Career.register = async (req, res) => {
     const userData = req.body;
     try {
-        // Prepare the query parameters
-        const queryParams = new URLSearchParams({
+        const userCareerData = {
             student_id: userData.student_id,
-            gender: userData.gender,
-            age: userData.age,
             major: userData.major,
+            age: userData.age,
+            gender: userData.gender,
             gpa: userData.gpa,
             extra_curricular: userData.extra_curricular,
             num_programming_languages: userData.num_programming_languages,
             num_past_internships: userData.num_past_internships,
-        }).toString();
-
-        const response = await fetch(`https://s456-wgtqgd7dva-uc.a.run.app/predict?${queryParams}`);
-        // Check if the request was successful
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const predictionResult = await response.json();
-        // If the response does not contain a 'good_employee' key, handle it appropriately
-        if (typeof predictionResult.good_employee !== 'number') {
-            throw new Error('Invalid prediction response structure');
-        }
-        // Assign the prediction to the user's career data
-        const userCareerData = {
-            ...userData, // spread in the original user data
-            prediction: predictionResult.good_employee,
         };
+
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(userCareerData),
+            redirect: 'follow',
+        };
+
+        // Call the microservice and retrieve the prediction
+        try {
+            const response = await fetch('https://s456-wgtqgd7dva-uc.a.run.app/predict', requestOptions)
+                .then(response => response.json());
+            userCareerData.prediction = response.good_employee;
+        } catch (err) {
+            console.error(err);
+            return res.status(500).json({ error: 'An error occurred while calling the ML microservice' });
+        }
 
         await user.setCareerData(req.uid, userCareerData);
         db.sortedSetAdd('users:career', req.uid, req.uid);
