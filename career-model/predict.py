@@ -1,38 +1,51 @@
-from flask import Flask, request
+import pandas as pd
+import joblib
+from pydantic import BaseModel, Field
+from pydantic.tools import parse_obj_as
 
-app = Flask(__name__)
+# Pydantic Models
+class Student(BaseModel):
+    student_id: str = Field(alias="Student ID")
+    gender: str = Field(alias="Gender")
+    age: str = Field(alias="Age")
+    major: str = Field(alias="Major")
+    gpa: str = Field(alias="GPA")
+    extra_curricular: str = Field(alias="Extra Curricular")
+    num_programming_languages: str = Field(alias="Num Programming Languages")
+    num_past_internships: str = Field(alias="Num Past Internships")
 
-@app.route("/")
-def hello_world():
-    return "<p>NodeBB!</p>"
+    class Config:
+        allow_population_by_field_name = True
 
-@app.route("/predict", methods=["GET"])
-def predict_student():
-    # Get parameters from the URL query string
-    student_id = request.args.get("student_id")
-    gender = request.args.get("gender")
-    age = request.args.get("age")
-    major = request.args.get("major")
-    gpa = request.args.get("gpa")
-    extra_curricular = request.args.get("extra_curricular")
-    num_programming_languages = request.args.get("num_programming_languages")
-    num_past_internships = request.args.get("num_past_internships")
+class PredictionResult(BaseModel):
+    good_employee: int
 
-    # Create a dictionary with the input parameters
-    student = {
-        "student_id": student_id,
-        "gender": gender,
-        "age": age,
-        "major": major,
-        "gpa": gpa,
-        "extra_curricular": extra_curricular,
-        "num_programming_languages": num_programming_languages,
-        "num_past_internships": num_past_internships
-    }
 
-    # Call the predict function to get the prediction
-    prediction_result = predict(student)
-    # Convert 'int64' to 'int' for JSON serialization
-    prediction_result['good_employee'] = int(prediction_result['good_employee'])
+# Main Functionality
+def predict(student):
+    '''
+    Returns a prediction on whether the student will be a good employee
+    based on given parameters by using the ML model
+    Parameters
+    ----------
+    student : dict
+        A dictionary that contains all fields in Student
+    
+    Returns
+    -------
+    dict
+        A dictionary satisfying type PredictionResult, contains a single field
+        'good_employee' which is either 1 (will be a good employee) or 0 (will
+        not be a good employee)
+    '''
+    # Use Pydantic to validate model fields exist
+    student = parse_obj_as(Student, student)
 
-    return prediction_result
+    clf = joblib.load('./model.pkl')
+
+    student = student.dict(by_alias=True)
+    query = pd.DataFrame(student, index=[0])
+    prediction = clf.predict(query) # TODO: Error handling ??
+
+    return { 'good_employee': prediction[0] }
+    
