@@ -23,7 +23,7 @@ Career.register = async (req, res) => {
 
         try {
             const queryParams = new URLSearchParams(userCareerData);
-            const response = await fetch(`https://mlmodel1-wgtqgd7dva-uc.a.run.app/predict?${queryParams}`);
+            const response = await fetch(`https://fall23-nodebb-bugbusters-ml-model-wgtqgd7dva-uc.a.run.app/predict?${queryParams}`);
             const responseData = await response.json();
             userCareerData.prediction = String(responseData.good_employee);
         } catch (err) {
