@@ -296,11 +296,8 @@ describe('API', async () => {
                     }
 
                     const normalizedPath = pathObj.path.replace(/\/:([^\\/]+)/g, '/{$1}').replace(/\?/g, '');
-                    if (pathObj.path !== '/career/register') {
-                        assert(schema.paths.hasOwnProperty(normalizedPath), `${pathObj.path} is not defined in schema docs`);
-                    }
-                    // eslint-disable-next-line max-len
-                    // assert(schema.paths[normalizedPath].hasOwnProperty(pathObj.method), `${pathObj.path} was found in schema docs, but ${pathObj.method.toUpperCase()} method is not defined`);
+                    assert(schema.paths.hasOwnProperty(normalizedPath), `${pathObj.path} is not defined in schema docs`);
+                    assert(schema.paths[normalizedPath].hasOwnProperty(pathObj.method), `${pathObj.path} was found in schema docs, but ${pathObj.method.toUpperCase()} method is not defined`);
                 });
             });
         });
@@ -430,6 +427,7 @@ describe('API', async () => {
 
                 it(`${_method.toUpperCase()} ${path}: response status code should match one of the schema defined responses`, () => {
                     // HACK: allow HTTP 418 I am a teapot, for now   👇
+                    assert(context[method].responses.hasOwnProperty('418') || Object.keys(context[method].responses).includes(String(response.statusCode)), `${method.toUpperCase()} ${path} sent back unexpected HTTP status code: ${response.statusCode} ${JSON.stringify(response.body)}`);
                 });
 
                 // Recursively iterate through schema properties, comparing type
@@ -455,7 +453,7 @@ describe('API', async () => {
                         return;
                     }
 
-                    // assert.strictEqual(response.statusCode, 200, `HTTP 200 expected (path: ${method} ${path}`);
+                    assert.strictEqual(response.statusCode, 200, `HTTP 200 expected (path: ${method} ${path}`);
 
                     const hasJSON = http200.content && http200.content['application/json'];
                     if (hasJSON) {
@@ -537,9 +535,8 @@ describe('API', async () => {
 
         // Compare the schema to the response
         required.forEach((prop) => {
-            if (schema.hasOwnProperty(prop)) {
-                // eslint-disable-next-line max-len
-                // assert(response.hasOwnProperty(prop), `"${prop}" is a required property (path: ${method} ${path}, context: ${context})`);
+            if (schema.hasOwnProperty(prop) && prop !== 'isAnonymous') {
+                assert(response.hasOwnProperty(prop), `"${prop}" is a required property (path: ${method} ${path}, context: ${context})`);
 
                 // Don't proceed with type-check if the value could possibly be unset (nullable: true, in spec)
                 if (response[prop] === null && schema[prop].nullable === true) {
@@ -551,12 +548,10 @@ describe('API', async () => {
 
                 switch (schema[prop].type) {
                 case 'string':
-                    // eslint-disable-next-line max-len
-                    // assert.strictEqual(typeof response[prop], 'string', `"${prop}" was expected to be a string, but was ${typeof response[prop]} instead (path: ${method} ${path}, context: ${context})`);
+                    assert.strictEqual(typeof response[prop], 'string', `"${prop}" was expected to be a string, but was ${typeof response[prop]} instead (path: ${method} ${path}, context: ${context})`);
                     break;
                 case 'boolean':
-                    // eslint-disable-next-line max-len
-                    // assert.strictEqual(typeof response[prop], 'boolean', `"${prop}" was expected to be a boolean, but was ${typeof response[prop]} instead (path: ${method} ${path}, context: ${context})`);
+                    assert.strictEqual(typeof response[prop], 'boolean', `"${prop}" was expected to be a boolean, but was ${typeof response[prop]} instead (path: ${method} ${path}, context: ${context})`);
                     break;
                 case 'object':
                     assert.strictEqual(typeof response[prop], 'object', `"${prop}" was expected to be an object, but was ${typeof response[prop]} instead (path: ${method} ${path}, context: ${context})`);
