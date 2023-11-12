@@ -1,5 +1,5 @@
 from flask import Flask, request
-import predict
+from predict import predict
 app = Flask(__name__)
 
 
